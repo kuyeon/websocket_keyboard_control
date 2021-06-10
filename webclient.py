@@ -11,8 +11,7 @@ import json
 async def robot_client():
     uri = "ws://localhost:8765"
     async with websockets.connect(uri) as websocket:
-        """
-        publish_fmt = {
+        publish_data = {
             "BatteryStatus": 100,
             "CurrentPosition": 0,
             "Velocity": 50,
@@ -26,15 +25,13 @@ async def robot_client():
             }
         }
 
-        publish_data = json.dumps(publish_fmt)
-        await websocket.send(publish_data)
-        """
+        json_data = json.dumps(publish_data)
+        await websocket.send(json_data)
+
         data = await websocket.recv()
         data = json.loads(data)
         print(data)
-        #key_input = await websocket.recv()
-        #print(key_input)
+        await asyncio.sleep(0.5)
 
 while True:
     asyncio.get_event_loop().run_until_complete(robot_client())
-    time.sleep(0.5)
